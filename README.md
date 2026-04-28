@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -37,9 +37,7 @@ button{background:linear-gradient(90deg,#7c3aed,#22d3ee);color:white;font-weight
 <input id="gmail" placeholder="Gmail">
 
 <input id="date" type="date">
-
 <select id="time"></select>
-
 <button onclick="book()">Reserve</button>
 </div>
 
