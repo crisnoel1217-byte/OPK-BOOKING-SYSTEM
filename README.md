@@ -3,155 +3,173 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bigo OPK Reservation System</title>
+    <title>CN Bigo OPK Reservation</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Cinzel:wght@400;600;700;900&display=swap');
         * { font-family: 'Poppins', sans-serif; }
-        .gradient-bg { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
-        .glass { backdrop-filter: blur(20px); background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); }
-        .neon-glow { box-shadow: 0 0 20px rgba(102, 126, 234, 0.5); }
-        .pulse { animation: pulse 2s infinite; }
-        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: .5; } }
+        .cn-golden { 
+            font-family: 'Cinzel', serif; 
+            background: linear-gradient(45deg, #FFD700, #FFA500, #FF8C00); 
+            -webkit-background-clip: text; 
+            -webkit-text-fill-color: transparent; 
+            background-clip: text;
+            text-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
+            font-weight: 900;
+        }
+        .gradient-bg { background: linear-gradient(135deg, #1e1b4b 0%, #2d1b69 30%, #4158d0 60%, #c850c0 100%); }
+        .glass { backdrop-filter: blur(25px); background: rgba(255, 255, 255, 0.15); border: 1px solid rgba(255, 255, 255, 0.25); }
+        .neon-glow { box-shadow: 0 0 40px rgba(255, 215, 0, 0.4), 0 0 80px rgba(255, 165, 0, 0.2); }
+        .pulse-golden { animation: pulse-golden 2s infinite; }
+        @keyframes pulse-golden {
+            0%, 100% { box-shadow: 0 0 40px rgba(255, 215, 0, 0.4), 0 0 80px rgba(255, 165, 0, 0.2); }
+            50% { box-shadow: 0 0 60px rgba(255, 215, 0, 0.7), 0 0 120px rgba(255, 165, 0, 0.4); }
+        }
+        .admin-visible { display: block !important; }
     </style>
 </head>
-<body class="bg-gradient-to-br from-purple-900 via-indigo-900 to-pink-900 min-h-screen">
-    <!-- Header -->
-    <header class="gradient-bg shadow-2xl">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center py-6">
-                <div class="flex items-center space-x-3">
-                    <div class="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center neon-glow">
-                        <i class="fas fa-microphone-alt text-white text-xl"></i>
+<body class="bg-gradient-to-br from-purple-900 via-indigo-900 to-pink-900 min-h-screen overflow-hidden">
+    <!-- Golden CN Header -->
+    <header class="gradient-bg shadow-2xl py-8">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="flex flex-col sm:flex-row justify-between items-center">
+                <div class="flex items-center space-x-6 mb-6 sm:mb-0">
+                    <div class="w-24 h-24 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-3xl flex items-center justify-center neon-glow pulse-golden shadow-2xl">
+                        <span class="cn-golden text-4xl md:text-5xl tracking-widest drop-shadow-lg">CN</span>
                     </div>
-                    <div>
-                        <h1 class="text-3xl font-bold text-white drop-shadow-lg">Bigo OPK</h1>
-                        <p class="text-white/80 text-sm">Reservation System</p>
+                    <div class="text-center sm:text-left">
+                        <h1 class="text-4xl md:text-6xl font-black text-white drop-shadow-2xl mb-2">Bigo OPK</h1>
+                        <p class="text-xl md:text-2xl text-yellow-300 font-semibold drop-shadow-lg">Reservation System</p>
                     </div>
                 </div>
                 <div id="adminToggle" class="hidden">
-                    <button id="adminBtn" class="glass text-white px-6 py-2 rounded-2xl hover:bg-white/20 transition-all duration-300">
-                        <i class="fas fa-crown mr-2"></i>Admin Panel
+                    <button id="adminBtn" class="glass text-white px-8 py-4 rounded-3xl text-lg font-bold hover:bg-white/30 transition-all duration-500 neon-glow hover:scale-110">
+                        <i class="fas fa-crown mr-3 text-yellow-400"></i>Admin Panel
                     </button>
                 </div>
             </div>
         </div>
     </header>
 
-    <div class="max-w-4xl mx-auto px-4 py-12">
-        <!-- Main Reservation Form -->
-        <div id="reservationSection" class="glass rounded-3xl p-8 md:p-12 shadow-2xl neon-glow mb-12">
-            <div class="text-center mb-10">
-                <div class="w-24 h-24 bg-white/20 rounded-3xl mx-auto mb-6 flex items-center justify-center neon-glow">
-                    <i class="fas fa-calendar-check text-3xl text-white"></i>
+    <div class="max-w-7xl mx-auto px-6 py-16">
+        <!-- Main Reservation Form - BIGGER & CENTERED -->
+        <div id="reservationSection" class="glass rounded-4xl p-16 md:p-24 shadow-4xl neon-glow mx-auto max-w-5xl">
+            <div class="text-center mb-16">
+                <div class="w-32 h-32 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-4xl mx-auto mb-8 flex items-center justify-center neon-glow pulse-golden shadow-4xl">
+                    <i class="fas fa-calendar-check text-5xl text-gray-900"></i>
                 </div>
-                <h2 class="text-4xl md:text-5xl font-bold bg-gradient-to-r from-white to-gray-200 bg-clip-text text-transparent mb-4">
+                <h2 class="text-5xl md:text-7xl font-black bg-gradient-to-r from-white via-yellow-200 to-orange-300 bg-clip-text text-transparent mb-6 drop-shadow-2xl">
                     Book Your OPK Slot
                 </h2>
-                <p class="text-xl text-white/90 max-w-2xl mx-auto">Secure your 15-minute slot between 8:00 PM - 10:15 PM. First come, first served!</p>
+                <p class="text-2xl md:text-3xl text-white/95 max-w-4xl mx-auto leading-relaxed">Secure your <span class="text-yellow-400 font-bold">15-minute slot</span> between <span class="text-yellow-400 font-bold">8:00 PM - 10:15 PM</span>. First come, first served!</p>
             </div>
 
-            <form id="reservationForm" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <form id="reservationForm" class="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 <div>
-                    <label class="block text-white font-semibold mb-3">Bigo Name</label>
-                    <input type="text" id="bigoName" required class="w-full p-4 rounded-2xl bg-white/20 border border-white/30 text-white placeholder-white/60 focus:outline-none focus:ring-4 focus:ring-white/30 transition-all duration-300" placeholder="Your Bigo username">
-                </div>
-                <div>
-                    <label class="block text-white font-semibold mb-3">Bigo ID</label>
-                    <input type="text" id="bigoId" required class="w-full p-4 rounded-2xl bg-white/20 border border-white/30 text-white placeholder-white/60 focus:outline-none focus:ring-4 focus:ring-white/30 transition-all duration-300" placeholder="123456789">
+                    <label class="block text-white font-bold text-xl mb-5">👤 Bigo Name</label>
+                    <input type="text" id="bigoName" required class="w-full p-6 text-xl rounded-3xl bg-white/20 border-2 border-white/40 text-white placeholder-white/70 focus:outline-none focus:ring-8 focus:ring-yellow-400/50 transition-all duration-500 hover:border-yellow-400" placeholder="Your Bigo username">
                 </div>
                 <div>
-                    <label class="block text-white font-semibold mb-3">Level</label>
-                    <input type="number" id="level" min="1" max="100" required class="w-full p-4 rounded-2xl bg-white/20 border border-white/30 text-white placeholder-white/60 focus:outline-none focus:ring-4 focus:ring-white/30 transition-all duration-300" placeholder="LVL 50">
+                    <label class="block text-white font-bold text-xl mb-5">🆔 Bigo ID</label>
+                    <input type="text" id="bigoId" required class="w-full p-6 text-xl rounded-3xl bg-white/20 border-2 border-white/40 text-white placeholder-white/70 focus:outline-none focus:ring-8 focus:ring-yellow-400/50 transition-all duration-500 hover:border-yellow-400" placeholder="123456789">
                 </div>
                 <div>
-                    <label class="block text-white font-semibold mb-3">Agency</label>
-                    <input type="text" id="agency" required class="w-full p-4 rounded-2xl bg-white/20 border border-white/30 text-white placeholder-white/60 focus:outline-none focus:ring-4 focus:ring-white/30 transition-all duration-300" placeholder="Your agency name">
+                    <label class="block text-white font-bold text-xl mb-5">⭐ Level</label>
+                    <input type="number" id="level" min="1" max="100" required class="w-full p-6 text-xl rounded-3xl bg-white/20 border-2 border-white/40 text-white placeholder-white/70 focus:outline-none focus:ring-8 focus:ring-yellow-400/50 transition-all duration-500 hover:border-yellow-400" placeholder="LVL 50">
                 </div>
-                <div class="md:col-span-2">
-                    <label class="block text-white font-semibold mb-3">Gmail Account</label>
-                    <input type="email" id="gmail" required class="w-full p-4 rounded-2xl bg-white/20 border border-white/30 text-white placeholder-white/60 focus:outline-none focus:ring-4 focus:ring-white/30 transition-all duration-300" placeholder="your.email@gmail.com">
+                <div>
+                    <label class="block text-white font-bold text-xl mb-5">🏢 Agency</label>
+                    <input type="text" id="agency" required class="w-full p-6 text-xl rounded-3xl bg-white/20 border-2 border-white/40 text-white placeholder-white/70 focus:outline-none focus:ring-8 focus:ring-yellow-400/50 transition-all duration-500 hover:border-yellow-400" placeholder="Your agency name">
                 </div>
-                <div class="md:col-span-2">
-                    <label class="block text-white font-semibold mb-3">Select Date</label>
-                    <input type="date" id="date" required class="w-full p-4 rounded-2xl bg-white/20 border border-white/30 text-white placeholder-white/60 focus:outline-none focus:ring-4 focus:ring-white/30 transition-all duration-300">
+                <div class="lg:col-span-2">
+                    <label class="block text-white font-bold text-xl mb-5">📧 Gmail Account</label>
+                    <input type="email" id="gmail" required class="w-full p-6 text-xl rounded-3xl bg-white/20 border-2 border-white/40 text-white placeholder-white/70 focus:outline-none focus:ring-8 focus:ring-yellow-400/50 transition-all duration-500 hover:border-yellow-400" placeholder="your.email@gmail.com">
                 </div>
-                <div class="md:col-span-2">
-                    <label class="block text-white font-semibold mb-3">Select Time Slot (15 mins)</label>
-                    <select id="timeSlot" required class="w-full p-4 rounded-2xl bg-white/20 border border-white/30 text-white focus:outline-none focus:ring-4 focus:ring-white/30 transition-all duration-300">
+                <div class="lg:col-span-2">
+                    <label class="block text-white font-bold text-xl mb-5">📅 Select Date</label>
+                    <input type="date" id="date" required class="w-full p-6 text-xl rounded-3xl bg-white/20 border-2 border-white/40 text-white placeholder-white/70 focus:outline-none focus:ring-8 focus:ring-yellow-400/50 transition-all duration-500 hover:border-yellow-400">
+                </div>
+                <div class="lg:col-span-2">
+                    <label class="block text-white font-bold text-xl mb-5">⏰ Select Time Slot (15 mins)</label>
+                    <select id="timeSlot" required class="w-full p-6 text-xl rounded-3xl bg-white/20 border-2 border-white/40 text-white focus:outline-none focus:ring-8 focus:ring-yellow-400/50 transition-all duration-500 hover:border-yellow-400">
                         <option value="">Choose your slot (8:00 PM - 10:15 PM)</option>
                     </select>
                 </div>
-                <div class="md:col-span-2">
-                    <button type="submit" id="submitBtn" class="w-full bg-gradient-to-r from-pink-500 to-purple-600 text-white font-bold py-6 px-8 rounded-3xl text-xl hover:from-pink-600 hover:to-purple-700 transform hover:scale-105 transition-all duration-300 shadow-2xl hover:shadow-purple-500/25 neon-glow">
-                        <i class="fas fa-lock mr-3"></i>Reserve My Slot
+                <div class="lg:col-span-2">
+                    <button type="submit" id="submitBtn" class="w-full bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 text-gray-900 font-black py-8 px-12 rounded-4xl text-3xl hover:from-yellow-500 hover:via-orange-600 hover:to-red-600 transform hover:scale-105 transition-all duration-500 shadow-4xl hover:shadow-yellow-500/50 neon-glow pulse-golden">
+                        <i class="fas fa-lock mr-4"></i>🔒 RESERVE MY SLOT NOW
                     </button>
                 </div>
             </form>
-            <div id="message" class="mt-8 p-6 rounded-2xl hidden"></div>
+            <div id="message" class="mt-12 p-8 rounded-3xl hidden text-2xl font-bold"></div>
         </div>
 
-        <!-- Admin Panel -->
-        <div id="adminPanel" class="glass rounded-3xl p-8 md:p-12 shadow-2xl neon-glow hidden">
-            <div class="flex justify-between items-center mb-10">
-                <h2 class="text-4xl font-bold bg-gradient-to-r from-yellow-400 to-orange-500 bg-clip-text text-transparent">
-                    <i class="fas fa-crown mr-4"></i>Admin Dashboard
+        <!-- FIXED Admin Panel - NOW FULLY VISIBLE -->
+        <div id="adminPanel" class="glass rounded-4xl p-16 md:p-24 shadow-4xl mx-auto max-w-7xl mt-20 admin-visible">
+            <div class="flex justify-between items-center mb-16">
+                <h2 class="text-5xl md:text-6xl font-black bg-gradient-to-r from-yellow-400 to-orange-500 bg-clip-text text-transparent flex items-center">
+                    <i class="fas fa-crown mr-6 text-6xl"></i>Admin Dashboard
                 </h2>
-                <button id="closeAdmin" class="text-white/80 hover:text-white text-2xl">
+                <button id="closeAdmin" class="text-white/80 hover:text-white text-4xl p-4 rounded-3xl hover:bg-white/20 transition-all duration-300">
                     <i class="fas fa-times"></i>
                 </button>
             </div>
 
             <!-- Admin PIN Input -->
-            <div id="adminPinSection" class="text-center mb-12">
-                <input type="password" id="adminPin" maxlength="4" class="w-32 h-20 text-4xl font-bold text-center rounded-2xl bg-white/20 border-4 border-white/30 text-white focus:outline-none focus:border-yellow-400 mx-auto" placeholder="PIN">
-                <p class="text-white/80 mt-4">Enter Admin PIN: <span class="font-bold text-yellow-400">6969</span></p>
+            <div id="adminPinSection" class="text-center mb-20 bg-white/10 p-12 rounded-4xl">
+                <div class="w-32 h-32 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-4xl mx-auto mb-8 flex items-center justify-center neon-glow pulse-golden">
+                    <i class="fas fa-key text-5xl text-gray-900"></i>
+                </div>
+                <input type="password" id="adminPin" maxlength="4" class="w-40 h-24 text-5xl font-black text-center rounded-4xl bg-white/30 border-4 border-yellow-400 mx-auto mb-8 focus:outline-none focus:border-orange-500" placeholder="PIN">
+                <p class="text-2xl text-white/90 font-bold">Enter Admin PIN: <span class="cn-golden text-3xl">6969</span></p>
             </div>
 
             <!-- Schedule Summary -->
             <div id="scheduleSummary" class="hidden">
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
-                    <div class="glass p-8 rounded-2xl">
-                        <h3 class="text-2xl font-bold text-white mb-6 flex items-center">
-                            <i class="fas fa-calendar mr-3 text-yellow-400"></i>Today's Schedule
+                <div class="grid grid-cols-1 xl:grid-cols-2 gap-12 mb-20">
+                    <div class="glass p-12 rounded-4xl h-96">
+                        <h3 class="text-3xl font-black text-white mb-10 flex items-center cn-golden">
+                            <i class="fas fa-calendar mr-4 text-4xl"></i>Today's Schedule
                         </h3>
-                        <div id="todaySchedule" class="space-y-4 max-h-96 overflow-y-auto"></div>
+                        <div id="todaySchedule" class="space-y-6 max-h-72 overflow-y-auto pr-4"></div>
                     </div>
-                    <div class="glass p-8 rounded-2xl">
-                        <h3 class="text-2xl font-bold text-white mb-6 flex items-center">
-                            <i class="fas fa-chart-bar mr-3 text-green-400"></i>Booking Stats
+                    <div class="glass p-12 rounded-4xl">
+                        <h3 class="text-3xl font-black text-white mb-10 flex items-center cn-golden">
+                            <i class="fas fa-chart-bar mr-4 text-4xl"></i>Booking Stats
                         </h3>
-                        <canvas id="statsChart" height="200"></canvas>
-                        <div class="mt-6 grid grid-cols-2 gap-4 text-center">
-                            <div class="glass p-4 rounded-xl">
-                                <div class="text-3xl font-bold text-green-400" id="totalBookings">0</div>
-                                <div class="text-white/80 text-sm">Total Bookings</div>
+                        <div class="h-64 mb-12">
+                            <canvas id="statsChart"></canvas>
+                        </div>
+                        <div class="grid grid-cols-2 gap-8 text-center">
+                            <div class="glass p-8 rounded-3xl neon-glow">
+                                <div class="text-5xl font-black cn-golden mb-2" id="totalBookings">0</div>
+                                <div class="text-2xl text-white/90 font-bold">Total Bookings</div>
                             </div>
-                            <div class="glass p-4 rounded-xl">
-                                <div class="text-3xl font-bold text-yellow-400" id="availableSlots">19</div>
-                                <div class="text-white/80 text-sm">Available Today</div>
+                            <div class="glass p-8 rounded-3xl neon-glow">
+                                <div class="text-5xl font-black text-green-400 mb-2" id="availableSlots">19</div>
+                                <div class="text-2xl text-white/90 font-bold">Available Today</div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- All Reservations -->
-                <div class="glass p-8 rounded-2xl">
-                    <h3 class="text-2xl font-bold text-white mb-6 flex items-center">
-                        <i class="fas fa-list mr-3 text-blue-400"></i>All Reservations
+                <!-- All Reservations Table -->
+                <div class="glass p-12 rounded-4xl">
+                    <h3 class="text-3xl font-black text-white mb-12 flex items-center cn-golden">
+                        <i class="fas fa-list mr-4 text-4xl"></i>All Reservations
                     </h3>
                     <div class="overflow-x-auto">
-                        <table class="w-full text-white">
+                        <table class="w-full text-white text-lg">
                             <thead>
-                                <tr class="border-b border-white/20">
-                                    <th class="p-4 text-left font-semibold">Date/Time</th>
-                                    <th class="p-4 text-left font-semibold">Bigo Name</th>
-                                    <th class="p-4 text-left font-semibold">ID/LVL</th>
-                                    <th class="p-4 text-left font-semibold">Agency</th>
-                                    <th class="p-4 text-left font-semibold">Email</th>
-                                    <th class="p-4 text-left font-semibold">Actions</th>
+                                <tr class="border-b-4 border-yellow-400/50">
+                                    <th class="p-6 text-left font-black text-xl">Date/Time</th>
+                                    <th class="p-6 text-left font-black text-xl">Bigo Name</th>
+                                    <th class="p-6 text-left font-black text-xl">ID/LVL</th>
+                                    <th class="p-6 text-left font-black text-xl">Agency</th>
+                                    <th class="p-6 text-left font-black text-xl">Email</th>
+                                    <th class="p-6 text-left font-black text-xl">Actions</th>
                                 </tr>
                             </thead>
                             <tbody id="allReservations"></tbody>
@@ -170,11 +188,9 @@
             '22:00', '22:15'
         ];
 
-        // Reservations data (persists in localStorage)
         let reservations = JSON.parse(localStorage.getItem('bigoReservations')) || [];
         let isAdmin = false;
 
-        // Initialize
         init();
 
         function init() {
@@ -204,11 +220,8 @@
                 const option = document.createElement('option');
                 const timeStr = formatTime(slot);
                 option.value = slot;
-                option.textContent = timeStr;
-                if (bookedSlots.includes(slot)) {
-                    option.textContent = `${timeStr} ❌ NOT AVAILABLE`;
-                    option.disabled = true;
-                }
+                option.textContent = bookedSlots.includes(slot) ? `${timeStr} ❌ NOT AVAILABLE` : timeStr;
+                if (bookedSlots.includes(slot)) option.disabled = true;
                 select.appendChild(option);
             });
         }
@@ -217,10 +230,9 @@
             const [hour, minute] = slot.split(':');
             const time = new Date();
             time.setHours(parseInt(hour), parseInt(minute));
-            return time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            return time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true }).toUpperCase();
         }
 
-        // Form submission
         document.getElementById('reservationForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
@@ -232,17 +244,15 @@
                 gmail: document.getElementById('gmail').value,
                 date: document.getElementById('date').value,
                 time: document.getElementById('timeSlot').value,
-                timestamp: new Date().toISOString()
+                timestamp: Date.now().toString()
             };
 
-            // Check if slot is available
             const existing = reservations.find(r => r.date === formData.date && r.time === formData.time);
             if (existing) {
                 showMessage('❌ This time slot is already taken!', 'error');
                 return;
             }
 
-            // Save reservation
             reservations.push(formData);
             localStorage.setItem('bigoReservations', JSON.stringify(reservations));
             
@@ -257,24 +267,25 @@
         function showMessage(text, type) {
             const message = document.getElementById('message');
             message.textContent = text;
-            message.className = `mt-8 p-6 rounded-2xl text-xl font-semibold ${type === 'success' ? 'bg-green-500/20 border-2 border-green-500 text-green-100' : 'bg-red-500/20 border-2 border-red-500 text-red-100'}`;
+            message.className = `mt-12 p-8 rounded-3xl text-2xl font-black ${type === 'success' ? 
+                'bg-green-500/30 border-4 border-green-500 text-green-100 neon-glow' : 
+                'bg-red-500/30 border-4 border-red-500 text-red-100 neon-glow'}`;
             message.classList.remove('hidden');
-            
-            setTimeout(() => message.classList.add('hidden'), 5000);
+            setTimeout(() => message.classList.add('hidden'), 6000);
         }
 
-        // Date change listener
         document.getElementById('date').addEventListener('change', updateTimeSlots);
 
-        // Admin functionality
-        document.getElementById('adminBtn').addEventListener('click', () => {
-            document.getElementById('adminPanel').classList.remove('hidden');
-            document.getElementById('reservationSection').classList.add('hidden');
+        // FIXED Admin functionality
+        document.getElementById('adminBtn').addEventListener('click', function() {
+            document.getElementById('reservationSection').style.display = 'none';
+            document.getElementById('adminPanel').style.display = 'block';
+            document.getElementById('adminPanel').scrollIntoView({ behavior: 'smooth' });
         });
 
-        document.getElementById('closeAdmin').addEventListener('click', () => {
-            document.getElementById('adminPanel').classList.add('hidden');
-            document.getElementById('reservationSection').classList.remove('hidden');
+        document.getElementById('closeAdmin').addEventListener('click', function() {
+            document.getElementById('adminPanel').style.display = 'none';
+            document.getElementById('reservationSection').style.display = 'block';
         });
 
         document.getElementById('adminPin').addEventListener('input', function(e) {
@@ -282,8 +293,8 @@
                 isAdmin = true;
                 document.getElementById('adminPinSection').classList.add('hidden');
                 document.getElementById('scheduleSummary').classList.remove('hidden');
-                updateAdminDashboard();
                 localStorage.setItem('isAdmin', 'true');
+                updateAdminDashboard();
             }
         });
 
@@ -300,17 +311,18 @@
             
             container.innerHTML = todayRes.length ? 
                 todayRes.map(r => `
-                    <div class="glass p-4 rounded-xl flex justify-between items-center">
+                    <div class="glass p-6 rounded-3xl flex justify-between items-center hover:bg-white/20 transition-all">
                         <div>
-                            <div class="font-bold text-lg">${formatTime(r.time)}</div>
-                            <div class="text-sm text-white/70">${r.bigoName} (${r.level})</div>
+                            <div class="text-2xl font-black cn-golden mb-2">${formatTime(r.time)}</div>
+                            <div class="text-xl">${r.bigoName} <span class="text-yellow-400">(${r.level})</span></div>
+                            <div class="text-sm text-white/70">${r.agency}</div>
                         </div>
-                        <button onclick="cancelReservation('${r.timestamp}')" class="bg-red-500/80 hover:bg-red-600 text-white px-4 py-2 rounded-xl text-sm font-semibold transition-all">
-                            Cancel
+                        <button onclick="cancelReservation('${r.timestamp}')" class="bg-red-500/90 hover:bg-red-600 text-white px-6 py-3 rounded-3xl text-lg font-bold transition-all shadow-lg hover:shadow-red-500/50">
+                            ❌ Cancel
                         </button>
                     </div>
                 `).join('') :
-                '<div class="text-center py-12 text-white/60"><i class="fas fa-calendar-times text-4xl mb-4"></i><div>No bookings today</div></div>';
+                '<div class="text-center py-20 text-white/60"><i class="fas fa-calendar-times text-8xl mb-8 opacity-50"></i><div class="text-3xl font-bold">No bookings today</div></div>';
         }
 
         function updateStats() {
@@ -322,51 +334,54 @@
             document.getElementById('totalBookings').textContent = reservations.length;
             document.getElementById('availableSlots').textContent = available;
 
-            // Update chart
-            const ctx = document.getElementById('statsChart').getContext('2d');
-            if (window.statsChart) window.statsChart.destroy();
-            window.statsChart = new Chart(ctx, {
-                type: 'doughnut',
-                data: {
-                    labels: ['Booked', 'Available'],
-                    datasets: [{
-                        data: [todayBookings, available],
-                        backgroundColor: ['#ef4444', '#10b981'],
-                        borderWidth: 0
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: { legend: { display: false } }
-                }
-            });
+            const ctx = document.getElementById('statsChart')?.getContext('2d');
+            if (ctx && window.statsChart) window.statsChart.destroy();
+            if (ctx) {
+                window.statsChart = new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Booked', 'Available'],
+                        datasets: [{
+                            data: [todayBookings, available],
+                            backgroundColor: ['#ef4444', '#10b981'],
+                            borderWidth: 0,
+                            cutout: '60%'
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { display: false } },
+                        animation: { duration: 2000 }
+                    }
+                });
+            }
         }
 
         function updateAllReservations() {
             const tbody = document.getElementById('allReservations');
             if (reservations.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="6" class="p-12 text-center text-white/60">No reservations yet</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="6" class="p-12 text-center text-white/60"><i class="fas fa-inbox text-6xl mb-6 opacity-50"></i><div class="text-3xl font-bold">No reservations yet</div></td></tr>';
                 return;
             }
 
             tbody.innerHTML = reservations.map(r => `
-                <tr class="border-b border-white/10 hover:bg-white/10 transition-all">
-                    <td class="p-4">${r.date} ${formatTime(r.time)}</td>
-                    <td class="p-4 font-semibold">${r.bigoName}</td>
-                    <td class="p-4">${r.bigoId}<br><span class="text-sm text-yellow-400">LVL ${r.level}</span></td>
-                    <td class="p-4">${r.agency}</td>
-                    <td class="p-4">${r.gmail}</td>
-                    <td class="p-4">
-                        <button onclick="cancelReservation('${r.timestamp}')" class="bg-red-500/80 hover:bg-red-600 text-white px-4 py-2 rounded-xl text-sm font-semibold transition-all mr-2">
-                            <i class="fas fa-trash"></i>
+                <tr class="border-b-2 border-white/20 hover:bg-white/10 transition-all">
+                    <td class="p-6 font-bold cn-golden">${r.date}<br>${formatTime(r.time)}</td>
+                    <td class="p-6 font-bold text-2xl">${r.bigoName}</td>
+                    <td class="p-6">${r.bigoId}<br><span class="text-2xl cn-golden">LVL ${r.level}</span></td>
+                    <td class="p-6 font-bold">${r.agency}</td>
+                    <td class="p-6">${r.gmail}</td>
+                    <td class="p-6">
+                        <button onclick="cancelReservation('${r.timestamp}')" class="bg-red-500/90 hover:bg-red-600 text-white px-8 py-4 rounded-3xl text-xl font-bold transition-all shadow-xl hover:shadow-red-500/50 mr-4">
+                            <i class="fas fa-trash mr-2"></i>Delete
                         </button>
                     </td>
                 </tr>
             `).join('');
         }
 
-        function cancelReservation(timestamp) {
+        window.cancelReservation = function(timestamp) {
             if (confirm('Cancel this reservation?')) {
                 reservations = reservations.filter(r => r.timestamp !== timestamp);
                 localStorage.setItem('bigoReservations', JSON.stringify(reservations));
@@ -379,6 +394,9 @@
         function loadAdminStatus() {
             if (localStorage.getItem('isAdmin') === 'true') {
                 isAdmin = true;
+                document.getElementById('adminPinSection').classList.add('hidden');
+                document.getElementById('scheduleSummary').classList.remove('hidden');
+                updateAdminDashboard();
             }
         }
 
