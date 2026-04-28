@@ -1,185 +1,167 @@
-[index.html](https://github.com/user-attachments/files/27155628/index.html)
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>OPK GenZ System</title>
+<title>CN OPK Firebase</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 
 <style>
-:root{
-  --bg:#0f0f1a;
-  --card:#18182a;
-  --accent:#7c3aed;
-  --accent2:#22c55e;
-  --text:#ffffff;
-  --muted:#9ca3af;
-}
-
-*{box-sizing:border-box;font-family:Inter,sans-serif}
-body{margin:0;background:linear-gradient(135deg,#0f0f1a,#1a1a2e);color:var(--text)}
-.wrap{max-width:900px;margin:auto;padding:15px}
-
-.logo{
-  text-align:center;margin-bottom:10px
-}
-.logo div{
-  width:70px;height:70px;margin:auto;border-radius:20px;
-  background:linear-gradient(135deg,#7c3aed,#22c55e);
-  display:flex;align-items:center;justify-content:center;
-  font-weight:700;font-size:24px
-}
-
-h1{text-align:center;margin:10px 0}
-.subtitle{text-align:center;color:var(--muted);font-size:13px;margin-bottom:15px}
-
-.card{
-  background:var(--card);
-  padding:18px;
-  border-radius:18px;
-  box-shadow:0 10px 30px rgba(0,0,0,.4);
-  margin-bottom:15px
-}
-
-input,button{
-  width:100%;padding:14px;margin:6px 0;
-  border:none;border-radius:12px;font-size:14px
-}
-
-input{background:#0f0f1a;color:white}
-input::placeholder{color:#6b7280}
-
-button{
-  background:linear-gradient(135deg,#7c3aed,#6366f1);
-  color:white;font-weight:600
-}
-
-button:hover{opacity:.9}
-
-.badge{
-  background:#0f0f1a;border:1px solid #2a2a40;
-  padding:6px 10px;border-radius:999px;
-  font-size:12px;color:var(--muted);
-  display:inline-block;margin-top:5px
-}
-
-.status{text-align:center;margin-top:10px;font-size:13px}
-.ok{color:var(--accent2)}
-.err{color:#ef4444}
-
-.table-wrap{overflow:auto}
-
-table{width:100%;border-collapse:collapse;margin-top:10px}
-th,td{padding:10px;border-bottom:1px solid #2a2a40;font-size:12px}
-
-@media(max-width:600px){
-  input,button{font-size:13px;padding:12px}
-}
+body{margin:0;font-family:Inter;background:#0f0f1a;color:white}
+header{text-align:center;padding:20px;font-size:26px;font-weight:700;background:linear-gradient(90deg,#7c3aed,#22d3ee);-webkit-background-clip:text;color:transparent}
+.container{max-width:1000px;margin:auto;padding:15px}
+.card{background:rgba(255,255,255,0.05);padding:15px;border-radius:15px;margin-bottom:15px}
+input,select,button{width:100%;padding:12px;margin-top:10px;border-radius:10px;border:none}
+button{background:linear-gradient(90deg,#7c3aed,#22d3ee);color:white;font-weight:600}
+.slot{display:flex;justify-content:space-between;background:rgba(255,255,255,0.08);padding:10px;margin-top:5px;border-radius:10px}
+.available{color:#22c55e}
+.taken{color:#ef4444}
+.admin{display:none}
 </style>
+
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js"></script>
 </head>
 
 <body>
+<header>🔥 CN OPK CLOUD SYSTEM</header>
 
-<div class="wrap">
-
-<div class="logo">
-  <div>CN</div>
-</div>
-
-<h1>OPK Booking</h1>
-<div class="subtitle">Fast • Clean • Mobile Friendly</div>
+<div class="container">
 
 <div class="card">
-<h3>Create Booking</h3>
-
+<h3>Book Slot</h3>
 <input id="name" placeholder="Bigo Name">
-<input id="bigo" placeholder="Bigo ID">
+<input id="id" placeholder="Bigo ID">
+<input id="lvl" placeholder="Level">
 <input id="agency" placeholder="Agency">
-<input id="email" placeholder="Email">
-<input id="level" placeholder="Host Level">
-<input id="date" type="date" onchange="loadDaily()">
-<input id="time" placeholder="Time (ex. 8:00 PM)">
+<input id="gmail" placeholder="Gmail">
 
-<div id="daily" class="badge">Daily OPK: 0</div>
+<input id="date" type="date">
 
-<button onclick="book()">Reserve Slot</button>
-<div id="status" class="status"></div>
+<select id="time"></select>
+
+<button onclick="book()">Reserve</button>
 </div>
 
 <div class="card">
+<h3>Slots</h3>
+<div id="slots"></div>
+</div>
+
+<div class="card">
+<h3>Admin</h3>
+<input id="adminPass" type="password" placeholder="Password">
+<button onclick="login()">Login</button>
+</div>
+
+<div class="card admin" id="adminPanel">
 <h3>Dashboard</h3>
-<button onclick="load()">Refresh</button>
-
-<div class="table-wrap">
-<table>
-<thead>
-<tr>
-<th>Name</th><th>ID</th><th>Date</th><th>Time</th>
-</tr>
-</thead>
-<tbody id="table"></tbody>
-</table>
-</div>
+<div id="records"></div>
 </div>
 
 </div>
 
-<script>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getFirestore, collection, addDoc, getDocs, query, where } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT.firebaseapp.com",
-  projectId: "YOUR_PROJECT_ID"
+  apiKey: "AIzaSyBJBT_BAeos1hb_fKJzSontJVgBub9Wjhc",
+  authDomain: "opk-system-cn.firebaseapp.com",
+  projectId: "opk-system-cn",
+  storageBucket: "opk-system-cn.firebasestorage.app",
+  messagingSenderId: "1098097772017",
+  appId: "1:1098097772017:web:4e015378c786d6b404f050",
+  measurementId: "G-CKMWK5W51Z"
 };
 
-firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
-async function isTaken(d,t){
- let snap = await db.collection("bookings").where("date","==",d).where("time","==",t).get();
- return !snap.empty;
+const start=20,endHour=22,endMin=15;
+
+function generateSlots(){
+ let slots=[],h=start,m=0;
+ while(h<endHour||(h===endHour&&m<=endMin)){
+  let t=`${h>12?h-12:h}:${m.toString().padStart(2,'0')} ${h>=12?'PM':'AM'}`;
+  slots.push(t);
+  m+=15;if(m>=60){m=0;h++}
+ }
+ return slots;
 }
 
-async function loadDaily(){
- let d=date.value;
- if(!d)return;
- let snap = await db.collection("bookings").where("date","==",d).get();
- daily.innerText = `Daily OPK: ${snap.size}`;
+async function render(){
+ slots.innerHTML="";
+ time.innerHTML="";
+
+ const selectedDate = date.value;
+ if(!selectedDate) return;
+
+ const snapshot = await getDocs(collection(db,"bookings"));
+ let booked = snapshot.docs.map(d=>d.data()).filter(b=>b.date.split('T')[0]===selectedDate);
+
+ generateSlots().forEach(t=>{
+  let taken=booked.find(b=>b.time===t);
+
+  let div=document.createElement('div');
+  div.className='slot';
+  div.innerHTML=`<span>${t}</span><span class="${taken?'taken':'available'}">${taken?'Not Available':'Available'}</span>`;
+  slots.appendChild(div);
+
+  if(!taken){
+   let opt=document.createElement('option');
+   opt.value=t;
+   opt.innerText=t;
+   time.appendChild(opt);
+  }
+ });
 }
 
 async function book(){
- let d=date.value,t=time.value;
- if(await isTaken(d,t)) return setStatus('Slot already taken','err');
-
- await db.collection("bookings").add({
+ let data={
   name:name.value,
-  bigo:bigo.value,
-  date:d,
-  time:t
- });
+  id:id.value,
+  lvl:lvl.value,
+  agency:agency.value,
+  gmail:gmail.value,
+  time:time.value,
+  date:date.value
+ };
 
- setStatus('Booked ✔','ok');
- load();
- loadDaily();
+ if(!data.date) return alert('Select date');
+ if(!data.time) return alert('No slot');
+
+ const q=query(collection(db,"bookings"),where("time","==",data.time));
+ const snap=await getDocs(q);
+
+ let exist=snap.docs.find(d=>d.data().date===data.date);
+ if(exist)return alert('Already taken');
+
+ await addDoc(collection(db,"bookings"),data);
+ alert('Booked ✅');
+ render();
 }
 
-async function load(){
- let snap = await db.collection("bookings").get();
- table.innerHTML='';
- snap.forEach(doc=>{
+function login(){
+ if(adminPass.value==='TRD123'){
+  adminPanel.style.display='block';
+  loadRecords();
+ }else alert('Wrong password');
+}
+
+async function loadRecords(){
+ records.innerHTML="";
+ const snapshot = await getDocs(collection(db,"bookings"));
+ snapshot.forEach(doc=>{
   let b=doc.data();
-  table.innerHTML+=`<tr><td>${b.name}</td><td>${b.bigo}</td><td>${b.date}</td><td>${b.time}</td></tr>`;
+  let div=document.createElement('div');
+  div.className='slot';
+  div.innerHTML=`<span>${b.name} (${b.id})</span><span>${b.time} | ${b.date}</span>`;
+  records.appendChild(div);
  });
 }
 
-function setStatus(msg,type){
- status.textContent=msg;
- status.className='status '+type;
-}
-
-load();
-
+render();
 </script>
 
 </body>
